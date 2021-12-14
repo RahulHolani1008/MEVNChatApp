@@ -1,30 +1,24 @@
 const express = require('express');
 const path = require('path');
+const socket = require('socket.io');
+const http = require('http');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const helmet = require('helmet');
+const dotenv = require('dotenv').config({ debug: process.env.ENV == "DEV" });
 
 const room = require('./routes/room');
 const chat = require('./routes/chat');
+const db = require('./utils/db');
+const log = require('./utils/logger');
 const app = express();
+const server = http.createServer(app);
+const io = socket(server);
 
-var fs = require('fs');
-var util = require('util');
-var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags : 'w'});
-var log_stdout = process.stdout;
-
-console.log = function(d) { //
-  log_file.write(util.format(d) + '\n');
-  log_stdout.write(util.format(d) + '\n');
-};
-
-var mongoose = require('mongoose');
-mongoose.Promise = require('bluebird');
-mongoose.connect('mongodb://localhost/mevn-chat', { promiseLibrary: require('bluebird') })
-  .then(() =>  console.log('connection succesful'))
-  .catch((err) => console.error(err));
-
+io.on("connection", (stream) => {
+  console.info("New connection");
+})
 
 app.use(logger('dev'));
 app.use(compression());
@@ -54,4 +48,7 @@ app.use((err, req, res, next) => {
   res.render('error');
 });
 
-app.listen(8081);
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.info(`Application successfully running on port ${PORT}`)
+})
