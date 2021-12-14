@@ -1,20 +1,23 @@
 {
-  "name": "mevn-chat-app",
+  "name": "mevn-chat-app-server",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "dev": "nodemon server",
+    "build": "node server"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.1",
+    "compression": "^1.7.4",
     "express": "^4.17.1",
+    "helmet": "^4.6.0",
     "mongoose": "^6.1.1",
-    "morgan": "^1.10.0",
-    "uuid": "^8.3.2"
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

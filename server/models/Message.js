@@ -1,9 +1,8 @@
 const mongoose = require('mongoose'), Schema = mongoose.Schema;
-const { v4: uuidv4 } = require('uuid');
 
 const MesssageSchema = new mongoose.Schema({
   roomId : [{type: Schema.Types.ObjectId, ref: 'Room'}],
-  id: uuidv4(),
+  id: mongoose.Types.ObjectId,
   message: String,
   createdDate: { type: Date, default: Date.now },
   from: {type: Schema.Types.ObjectId, ref: 'User'},
